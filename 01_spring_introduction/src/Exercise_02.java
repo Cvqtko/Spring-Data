@@ -11,7 +11,7 @@ public class Exercise_02 {
 	static String databaseName = "diablo";
 	static String url = "jdbc:mysql://localhost:3306/" + databaseName;
 	static String username = "root";
-	static String password = "Lubime7sa@";
+	static String password = "root";
 
 	public static void main(String[] args)
 			throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
