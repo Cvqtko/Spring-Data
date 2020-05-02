@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Exercise_05 {
@@ -20,53 +22,35 @@ public class Exercise_05 {
 			throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 
 		Class.forName("com.mysql.cj.jdbc.Driver");
-
 		connection = DriverManager.getConnection(url, username, password);
-
-
 		Scanner scanner = new Scanner(System.in);
-		int villian_id = Integer.parseInt(scanner.nextLine());
-
-		if (!checkIfEntityExist(villian_id, "villains")) {
-			System.out.printf("No villain with ID %d exists in the database.", villian_id);
-			return;
+		String country = scanner.nextLine();
+		resultSet = getTownsByCountry(country);
+		int counter = 0;
+		ArrayList<String> townsAffected = new ArrayList();
+		while (resultSet.next()) {
+			townsAffected.add(resultSet.getString("name").toUpperCase());
+			query = "UPDATE towns SET name = UCASE(?) WHERE name = ?;";
+			statement = connection.prepareStatement(query);
+			statement.setString(1, resultSet.getString("name"));
+			statement.setString(2, resultSet.getString("name"));
+			counter++;
 		}
-
-		System.out.printf("Villain: %s%n", getEntityById(villian_id, "villains"));
-		
-		getMinionAndAgeByVillainId(villian_id);
-		
-		connection.close();
-	}
-
-	private static void getMinionAndAgeByVillainId(int id) throws SQLException {
-		query = "SELECT m.name, m.age FROM minions AS m\r\n" + 
-				"JOIN minions_villains mv on m.id = mv.minion_id\r\n" + 
-				"WHERE mv.villain_id = ?;";
-		statement = connection.prepareStatement(query);
-		statement.setInt(1, id);
-		resultSet = statement.executeQuery();
-		int count = 1;
-		
-		while(resultSet.next()) {
-			System.out.println(String.format("%d. %s %s",count,resultSet.getString("name"),resultSet.getString("age")));
-			count++;
+		if (counter == 0) {
+			System.out.println("No town names were affected.");
+		} else {
+			System.out.printf("%d town names were affected.\n", counter);
+			System.out.println(Arrays.toString(townsAffected.toArray()));
 		}
+		
+
 	}
 
-	private static String getEntityById(int entityId, String table) throws SQLException{
-		query = "SELECT name FROM " + table + " WHERE id = ?";
+	private static ResultSet getTownsByCountry(String country) throws SQLException {
+		query = "SELECT name FROM towns\r\n" + "WHERE country = ?;";
 		statement = connection.prepareStatement(query);
-		statement.setInt(1, entityId);
+		statement.setString(1, country);
 		resultSet = statement.executeQuery();
-		return resultSet.next() ? resultSet.getString("name") : null;
-	}
-
-	private static boolean checkIfEntityExist(int entityId, String table) throws SQLException {
-		query = "SELECT * FROM " + table + " WHERE id = ?";
-		statement = connection.prepareStatement(query);
-		statement.setInt(1, entityId);
-		resultSet = statement.executeQuery();
-		return resultSet.next();
+		return resultSet;
 	}
 }

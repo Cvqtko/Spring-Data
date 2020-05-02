@@ -23,50 +23,29 @@ public class Exercise_06 {
 
 		connection = DriverManager.getConnection(url, username, password);
 
-
 		Scanner scanner = new Scanner(System.in);
 		int villian_id = Integer.parseInt(scanner.nextLine());
+		int minionsReleased = 0;
+		query = "DELETE FROM minions_villains WHERE villain_id = ?;";
+		statement = connection.prepareStatement(query);
+		statement.setInt(1, villian_id);
+		minionsReleased = statement.executeUpdate();
 
-		if (!checkIfEntityExist(villian_id, "villains")) {
-			System.out.printf("No villain with ID %d exists in the database.", villian_id);
-			return;
+		query = "SELECT * FROM villains WHERE id = ?";
+		statement = connection.prepareStatement(query);
+		statement.setInt(1, villian_id);
+		resultSet = statement.executeQuery();
+
+		if (resultSet.next()) {
+			System.out.printf("%s was deleted \n%d minions released", resultSet.getString("name"), minionsReleased);
+			query = "DELETE FROM villains WHERE id = ?";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, villian_id);
+			statement.executeUpdate();
+		} else {
+			System.out.println("No such villain was found");
 		}
 
-		System.out.printf("Villain: %s%n", getEntityById(villian_id, "villains"));
-		
-		getMinionAndAgeByVillainId(villian_id);
-		
-		connection.close();
 	}
 
-	private static void getMinionAndAgeByVillainId(int id) throws SQLException {
-		query = "SELECT m.name, m.age FROM minions AS m\r\n" + 
-				"JOIN minions_villains mv on m.id = mv.minion_id\r\n" + 
-				"WHERE mv.villain_id = ?;";
-		statement = connection.prepareStatement(query);
-		statement.setInt(1, id);
-		resultSet = statement.executeQuery();
-		int count = 1;
-		
-		while(resultSet.next()) {
-			System.out.println(String.format("%d. %s %s",count,resultSet.getString("name"),resultSet.getString("age")));
-			count++;
-		}
-	}
-
-	private static String getEntityById(int entityId, String table) throws SQLException{
-		query = "SELECT name FROM " + table + " WHERE id = ?";
-		statement = connection.prepareStatement(query);
-		statement.setInt(1, entityId);
-		resultSet = statement.executeQuery();
-		return resultSet.next() ? resultSet.getString("name") : null;
-	}
-
-	private static boolean checkIfEntityExist(int entityId, String table) throws SQLException {
-		query = "SELECT * FROM " + table + " WHERE id = ?";
-		statement = connection.prepareStatement(query);
-		statement.setInt(1, entityId);
-		resultSet = statement.executeQuery();
-		return resultSet.next();
-	}
 }
