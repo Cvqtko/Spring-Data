@@ -34,6 +34,7 @@ public class Exercise_05 {
 			statement = connection.prepareStatement(query);
 			statement.setString(1, resultSet.getString("name"));
 			statement.setString(2, resultSet.getString("name"));
+			statement.executeUpdate();
 			counter++;
 		}
 		if (counter == 0) {

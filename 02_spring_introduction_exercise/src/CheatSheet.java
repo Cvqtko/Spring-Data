@@ -8,6 +8,9 @@ public class CheatSheet {
 		Scanner scanner = new Scanner(System.in);
 
 		int n = Integer.parseInt(scanner.nextLine());
+		
+		Integer[] minionsId = Arrays.stream(scanner.nextLine().split("\\s+")).map(Integer::parseInt)
+				.toArray(Integer[]::new);
 
 		List<Integer> numbers = Arrays.stream(scanner.nextLine().split("\\s+"))
 
