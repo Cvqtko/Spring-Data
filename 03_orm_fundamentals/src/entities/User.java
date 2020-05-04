@@ -2,12 +2,31 @@ package entities;
 
 import java.util.Date;
 
+import annotations.Column;
+import annotations.Entity;
+import annotations.Id;
+
+@Entity(name = "users")
 public class User {
+
+	@Id
+	@Column(name = "id")
 	private int id;
+
+	@Column(name = "username")
 	private String username;
+
+	@Column(name = "password")
 	private String password;
+
+	@Column(name = "age")
 	private int age;
+
+	@Column(name = "registration_date")
 	private Date registrationDate;
+
+	public User() {
+	}
 
 	public User(String username, String password, int age, Date registrationDate) {
 		this.username = username;
