@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Exercise_02 {
+public class Exercise_01 {
 
 	static Connection connection = null;
 	static String databaseName = "minions_db";
