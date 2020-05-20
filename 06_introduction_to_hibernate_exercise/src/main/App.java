@@ -5,7 +5,7 @@ import javax.persistence.Persistence;
 
 public class App {
 	public static void main(String[] args) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("soft-uni");
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("softuni");
 
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
