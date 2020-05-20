@@ -33,8 +33,18 @@ public class Engine implements Runnable {
 		 */
 
 		// Ex. 4
-		this.employeeWithSalaryOver50000();
+		//this.employeeWithSalaryOver50000();
 
+		// Ex. 5
+		//this.employeeFromDepartmentsEx();
+	}
+
+	private void employeeFromDepartmentsEx() {
+		List<Employee> employees = this.entityManager
+				.createQuery("SELECT e FROM Employee AS e WHERE e.department.name = 'Research and Development'"
+						+ "ORDER BY e.salary, e.id",Employee.class)
+				.getResultList();
+		employees.forEach(e->System.out.printf("%s %s from %s - %.2f$\n",e.getFirstName(),e.getLastName(),e.getDepartment(),e.getSalary()));
 	}
 
 	private void employeeWithSalaryOver50000() {
