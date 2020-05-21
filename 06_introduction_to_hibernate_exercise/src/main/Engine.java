@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import main.entities.Address;
 import main.entities.Employee;
 import main.entities.Town;
 
@@ -28,31 +29,72 @@ public class Engine implements Runnable {
 
 		// Ex. 3
 		/*
-		 * try { this.containsEmployeeEx(); } catch (IOException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
+		 * try { this.containsEmployeeEx(); } catch (IOException e) {
+		 * e.printStackTrace(); }
 		 */
 
 		// Ex. 4
-		//this.employeeWithSalaryOver50000();
+		// this.employeeWithSalaryOver50000();
 
 		// Ex. 5
-		//this.employeeFromDepartmentsEx();
+		// this.employeeFromDepartmentsEx();
+
+		// Ex. 6
+
+		try {
+			this.addingNewAddressAndAddItToEmp();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void addingNewAddressAndAddItToEmp() throws IOException {
+		System.out.println("Enter employee last name");
+		String lastName = this.reader.readLine();
+
+		Employee employee = this.entityManager
+				.createQuery("SELECT e FROM Employee AS e WHERE e.lastName = :name", Employee.class)
+				.setParameter("name", lastName).getSingleResult();
+
+		Address address = this.createNewAddress("Vitoshka 15");
+
+		this.entityManager.getTransaction().begin();
+		this.entityManager.detach(employee);
+		employee.setAddress(address);
+		this.entityManager.merge(employee);
+		this.entityManager.flush();
+		this.entityManager.getTransaction().commit();
+		System.out.println();
+	}
+
+	private Address createNewAddress(String textContent) {
+		Address address = new Address();
+		address.setText(textContent);
+
+		this.entityManager.getTransaction().begin();
+
+		this.entityManager.persist(address);
+		this.entityManager.getTransaction().commit();
+
+		return address;
 	}
 
 	private void employeeFromDepartmentsEx() {
 		List<Employee> employees = this.entityManager
 				.createQuery("SELECT e FROM Employee AS e WHERE e.department.name = 'Research and Development'"
-						+ "ORDER BY e.salary, e.id",Employee.class)
+						+ "ORDER BY e.salary, e.id", Employee.class)
 				.getResultList();
-		employees.forEach(e->System.out.printf("%s %s from %s - %.2f$\n",e.getFirstName(),e.getLastName(),e.getDepartment(),e.getSalary()));
+		employees.forEach(e -> System.out.printf("%s %s from %s - %.2f$\n", e.getFirstName(), e.getLastName(),
+				e.getDepartment(), e.getSalary()));
 	}
 
 	private void employeeWithSalaryOver50000() {
-		List<Employee> employees = this.entityManager.createQuery("SELECT e FROM Employee AS e WHERE e.salary > 50000",
-				Employee.class).getResultList();
-		
-		employees.forEach(e->System.out.println(e.getFirstName()));
-		
+		List<Employee> employees = this.entityManager
+				.createQuery("SELECT e FROM Employee AS e WHERE e.salary > 50000", Employee.class).getResultList();
+
+		employees.forEach(e -> System.out.println(e.getFirstName()));
+
 	}
 
 	private void containsEmployeeEx() throws IOException {
