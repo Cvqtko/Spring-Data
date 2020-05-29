@@ -41,12 +41,10 @@ public class Engine implements Runnable {
 
 		// Ex. 6
 
-		try {
-			this.addingNewAddressAndAddItToEmp();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		/*
+		 * try { this.addingNewAddressAndAddItToEmp(); } catch (IOException e) {
+		 * e.printStackTrace(); }
+		 */
 	}
 
 	private void addingNewAddressAndAddItToEmp() throws IOException {
