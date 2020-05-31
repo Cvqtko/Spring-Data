@@ -53,6 +53,14 @@ public class Engine implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		// Ex. 6
+
+		try {
+			this.addingNewAddressAndAddItToEmp();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void addingNewAddressAndAddItToEmp() throws IOException {
