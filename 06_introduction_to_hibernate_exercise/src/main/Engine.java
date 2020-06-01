@@ -3,10 +3,12 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 import main.entities.Address;
 import main.entities.Employee;
@@ -41,34 +43,25 @@ public class Engine implements Runnable {
 
 		// Ex. 6
 
-		try {
-			this.addingNewAddressAndAddItToEmp();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// Ex. 6
+//		  try { this.addingNewAddressAndAddItToEmp(); } catch (IOException e) {
+//		  e.printStackTrace(); }
+//		 
 
-		try {
-			this.addingNewAddressAndAddItToEmp();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		// Ex. 6
+		// Ex. 7
+		this.addressWithEmployeeCount();
 
-		try {
-			this.addingNewAddressAndAddItToEmp();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		// Ex. 6
+	}
 
-		try {
-			this.addingNewAddressAndAddItToEmp();
-		} catch (IOException e) {
-			e.printStackTrace();
+	private void addressWithEmployeeCount() {
+		List<Address> addresses = entityManager.createQuery("SELECT a FROM Address AS a", Address.class)
+				.getResultList();
+		addresses.sort((a1, a2) -> a2.getEmployees().size() - a1.getEmployees().size());
+
+		for (int i = 0; i < 10; i++) {
+			System.out.printf("%s - %d employees\n", addresses.get(i).getText(),
+					addresses.get(i).getEmployees().size());
 		}
+
 	}
 
 	private void addingNewAddressAndAddItToEmp() throws IOException {
