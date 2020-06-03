@@ -52,6 +52,10 @@ public class Engine implements Runnable {
 
 		// Ex. 7
 		this.addressWithEmployeeCount();
+		
+		// Ex. 7
+		this.addressWithEmployeeCount();
+
 
 	}
 
