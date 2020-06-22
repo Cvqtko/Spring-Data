@@ -30,11 +30,9 @@ public class Engine implements Runnable {
 		// this.removeObjectsEx();
 
 		// Ex. 3
-		/*
-		 * try { this.containsEmployeeEx(); } catch (IOException e) {
-		 * e.printStackTrace(); }
-		 */
-
+		// try { this.containsEmployeeEx(); } catch (IOException e) {
+		// e.printStackTrace(); }
+		
 		// Ex. 4
 		// this.employeeWithSalaryOver50000();
 
@@ -42,11 +40,9 @@ public class Engine implements Runnable {
 		// this.employeeFromDepartmentsEx();
 
 		// Ex. 6
-
-//		  try { this.addingNewAddressAndAddItToEmp(); } catch (IOException e) {
-//		  e.printStackTrace(); }
-//		 
-
+		// try { this.addingNewAddressAndAddItToEmp(); } catch (IOException e) {
+		// e.printStackTrace(); }
+	 
 		// Ex. 7
 		this.addressWithEmployeeCount();
 
